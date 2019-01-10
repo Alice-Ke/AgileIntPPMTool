@@ -18,7 +18,7 @@ public class Project {
   public Long getId() {
     return id;
   }
-
+""
   public String getProjectName() {
     return projectName;
   }
@@ -85,7 +85,7 @@ public class Project {
   private Date created_at;
   private Date updated_at;
 
-  public Project(){
+  public Project() {
 
   }
 
