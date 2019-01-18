@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.services.MapValidationService;
 import io.agileintelligence.ppmtool.services.ProjectService;
 
 @RestController
@@ -27,19 +28,19 @@ public class ProjectController {
   @Autowired
   private ProjectService projectService;
 
+  @Autowired
+  private MapValidationService mapValidationService;
+
   // shortcut for @RequestMapping(method = RequestMethod.GET)
   @PostMapping("")
-  public ResponseEntity<?> creaateNewProject(@Valid @RequestBody Project project, BindingResult result){
-    if( result.hasErrors()){
-      Map<String, String> errorMap = new HashMap<>();
-      for( FieldError fieldError: result.getFieldErrors()){
-        errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-      }
-
-      return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
-    }
+  public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult
+      result) {
+    ResponseEntity<?> errorMap = mapValidationService.MapValidation(result);
+    if (errorMap != null) return errorMap;
     Project project1 = projectService.saveOrUpdateProject(project);
     return new ResponseEntity<Project>(project, HttpStatus.CREATED);
+
+
   }
 
 }
