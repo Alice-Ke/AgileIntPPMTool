@@ -3,6 +3,8 @@ package io.agileintelligence.ppmtool.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
+
 import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.exceptions.ProjectIdException;
 import io.agileintelligence.ppmtool.repositories.ProjectRepository;
@@ -24,7 +26,7 @@ public class ProjectService {
     }
   }
 
-  public Project getProjectById(String projectId) {
+  public Project findProjectByIdentifier(String projectId) {
 
     Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
     if (project == null) {
@@ -33,4 +35,9 @@ public class ProjectService {
     return project;
 
   }
+
+  public Iterable<Project> findAllProjects(){
+    return projectRepository.findAll();
+  }
+
 }
