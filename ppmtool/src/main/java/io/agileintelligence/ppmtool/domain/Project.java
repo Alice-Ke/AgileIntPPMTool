@@ -100,6 +100,15 @@ public class Project {
   public Project() {
 
   }
+  @PrePersist
+  protected void onCreate(){
+    this.created_at = new Date();
+  }
+
+  @PreUpdate
+  protected void onUpdate(){
+    this.updated_at = new Date();
+  }
 
 
 }
