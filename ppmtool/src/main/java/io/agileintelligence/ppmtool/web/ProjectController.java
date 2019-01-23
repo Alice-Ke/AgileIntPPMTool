@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.services.MapValidationService;
 import io.agileintelligence.ppmtool.services.ProjectService;
 
+// methods in service layer has the same naming routine as in repo layer.
 @RestController
 @RequestMapping("api/project")
 public class ProjectController {
@@ -44,13 +46,20 @@ public class ProjectController {
   }
 
   @GetMapping("/{projectId}")
-  public ResponseEntity<?> getProjectById(@PathVariable String projectId){
+  public ResponseEntity<?> getProjectById(@PathVariable String projectId) {
     Project project = projectService.findProjectByIdentifier(projectId);
     return new ResponseEntity<Project>(project, HttpStatus.OK);
   }
 
   @GetMapping("/all")
-  public Iterable<Project> getAllProjects(){
+  public Iterable<Project> getAllProjects() {
     return projectService.findAllProjects();
+  }
+
+  @DeleteMapping("/{projectId}")
+  public ResponseEntity<?> deleteProjectById(@PathVariable String projectId) {
+    projectService.deleteProjectByIdentifier(projectId);
+    return new ResponseEntity<String>("Project with ID: '" + projectId + "' is deleted",
+        HttpStatus.OK);
   }
 }
