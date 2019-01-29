@@ -11,11 +11,20 @@ class AddProject extends Component {
       projectIdentifier: "",
       description: "",
       start_date: "",
-      end_date: ""
+      end_date: "",
+      errors: {}
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
+  //life cycle hooks
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -31,8 +40,10 @@ class AddProject extends Component {
     this.props.createProject(newProject, this.props.history);
   }
   render() {
+    const { errors } = this.state;
     return (
       <div className="project">
+        <h> {errors.projectName}</h>
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -107,12 +118,17 @@ class AddProject extends Component {
 
 // a constrain
 AddProject.propTypes = {
-  createProject: PropTypes.func.isRequired
+  createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
 };
+
+const mapStateToProps = state => ({
+  errors: state.errors
+});
 
 export default connect(
   // map state to prop
-  null,
+  mapStateToProps,
   // map dispatch to prop
   { createProject }
 )(AddProject);
